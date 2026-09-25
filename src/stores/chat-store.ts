@@ -4,6 +4,8 @@ import { API_URL } from "../constants/common";
 import contactsStore from "./contacts-store";
 import phoneStore from "./phone-store";
 
+import { del, get, post } from "../api";
+
 interface IMessage {
   id: number;
   type: "income" | "outcome";
@@ -42,59 +44,57 @@ class ChatStore {
 
   async getNotification() {
     try {
-      const responseReceiveNotification = await fetch(
+      const data = await get(
         `${API_URL}/waInstance${contactsStore.idInstance}/receiveNotification/${contactsStore.apiTokenInstance}`,
       );
 
-      if (responseReceiveNotification.status === 200) {
-        const data = await responseReceiveNotification.json();
-        if (data) {
-          const { receiptId, body } = data;
-          if (
-            body.typeWebhook === "incomingMessageReceived" &&
-            body.messageData?.typeMessage === "textMessage"
-          ) {
-            const senderName = body.senderData.senderName;
-            const text = body.messageData.textMessageData.textMessage;
+      if (data) {
+        // @ts-expect-error error
+        const { receiptId, body } = data;
+        if (
+          body.typeWebhook === "incomingMessageReceived" &&
+          body.messageData?.typeMessage === "textMessage"
+        ) {
+          const senderName = body.senderData.senderName;
+          const text = body.messageData.textMessageData.textMessage;
 
-            this.addMessage({
-              id: receiptId,
-              type: "income",
-              senderName: senderName,
-              text,
-            });
-          } else if (
-            body.typeWebhook === "outgoingMessageReceived" &&
-            body.messageData?.typeMessage === "textMessage"
-          ) {
-            const text = body.messageData.textMessageData.textMessage;
-            this.addMessage({
-              id: receiptId,
-              type: "outcome",
-              senderName: "Вы",
-              text,
-            });
-          } else if (
-            body.typeWebhook === "outgoingAPIMessageReceived" &&
-            body.messageData?.typeMessage === "extendedTextMessage"
-          ) {
-            const text = body.messageData.extendedTextMessageData.text;
-            this.addMessage({
-              id: receiptId,
-              type: "outcome",
-              senderName: "Вы",
-              text,
-            });
-          }
-
-          const responseDeleteNotification = await fetch(
-            `${API_URL}/waInstance${contactsStore.idInstance}/deleteNotification/${contactsStore.apiTokenInstance}/${data.receiptId}`,
-            {
-              method: "DELETE",
-            },
-          );
-          await responseDeleteNotification.json();
+          this.addMessage({
+            id: receiptId,
+            type: "income",
+            senderName: senderName,
+            text,
+          });
+        } else if (
+          body.typeWebhook === "outgoingMessageReceived" &&
+          body.messageData?.typeMessage === "textMessage"
+        ) {
+          const text = body.messageData.textMessageData.textMessage;
+          this.addMessage({
+            id: receiptId,
+            type: "outcome",
+            senderName: "Вы",
+            text,
+          });
+        } else if (
+          body.typeWebhook === "outgoingAPIMessageReceived" &&
+          body.messageData?.typeMessage === "extendedTextMessage"
+        ) {
+          const text = body.messageData.extendedTextMessageData.text;
+          this.addMessage({
+            id: receiptId,
+            type: "outcome",
+            senderName: "Вы",
+            text,
+          });
         }
+
+        await del(
+          // @ts-expect-error error
+          `${API_URL}/waInstance${contactsStore.idInstance}/deleteNotification/${contactsStore.apiTokenInstance}/${data.receiptId}`,
+          {
+            method: "DELETE",
+          },
+        );
       }
     } catch (e) {
       console.error(e);
@@ -109,20 +109,18 @@ class ChatStore {
 
     try {
       this.setIsLoading(true);
-      const responseSendMessage = await fetch(
+      await post(
         `${API_URL}/waInstance${contactsStore.idInstance}/sendMessage/${contactsStore.apiTokenInstance}`,
         {
-          method: "POST",
-          body: JSON.stringify({
-            chatId: phoneStore.chatId,
-            message: this.message.trim(),
-          }),
+          chatId: phoneStore.chatId,
+          message: this.message.trim(),
+        },
+        {
           headers: {
             "Content-Type": "application/json;charset=utf-8",
           },
         },
       );
-      responseSendMessage.json();
       this.setMessage("");
     } catch (e) {
       console.log(e);

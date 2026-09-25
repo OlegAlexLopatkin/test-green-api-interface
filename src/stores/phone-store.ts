@@ -2,6 +2,7 @@ import { makeAutoObservable } from "mobx";
 import { API_URL } from "../constants/common";
 import appStore from "./app-store";
 import contactsStore from "./contacts-store";
+import { post } from "../api";
 
 class PhoneStore {
   chatId = "";
@@ -32,21 +33,19 @@ class PhoneStore {
     if (this.validatePhone()) {
       this.setIsLoading(true);
       try {
-        const body = JSON.stringify({
-          phoneNumber: JSON.stringify(+this.phone),
-        });
-
-        const response = await fetch(
+        const body = {
+          phoneNumber: +this.phone,
+        };
+        // @ts-expect-error abc
+        const { exist, chatId } = await post(
           `${API_URL}/waInstance${contactsStore.idInstance}/checkAccount/${contactsStore.apiTokenInstance}`,
+          body,
           {
-            method: "POST",
-            body,
             headers: {
               "Content-Type": "application/json",
             },
           },
         );
-        const { exist, chatId } = await response.json();
         if (exist) {
           this.setChatId(chatId);
           appStore.nextStage();

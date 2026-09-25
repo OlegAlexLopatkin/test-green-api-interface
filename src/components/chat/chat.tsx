@@ -23,8 +23,6 @@ const Chat = observer(() => {
   return (
     <div className="chat">
       <form onSubmit={(e) => e.preventDefault()}>
-        <p>Chat</p>
-        <div className="chat__messages-wrapper"></div>
         <div>
           <input
             id="message"

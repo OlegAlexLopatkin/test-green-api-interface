@@ -1,7 +1,7 @@
 import { observer } from "mobx-react-lite";
 
-import contactsStore from "../../stores/contacts-store";
 import appStore from "../../stores/app-store";
+import contactsStore from "../../stores/contacts-store";
 
 const ContactsForm = observer(() => {
   return (
