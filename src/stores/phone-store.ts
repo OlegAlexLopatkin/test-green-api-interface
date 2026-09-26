@@ -1,8 +1,11 @@
 import { makeAutoObservable } from "mobx";
-import { API_URL } from "../constants/common";
-import appStore from "./app-store";
-import contactsStore from "./contacts-store";
-import { post } from "../api";
+
+import appStore from "src/stores/app-store";
+import contactsStore from "src/stores/contacts-store";
+
+import { fetchPost } from "src/api";
+import { API_URL } from "src/constants";
+import type { AccountVerification } from "src/types";
 
 class PhoneStore {
   chatId = "";
@@ -36,8 +39,8 @@ class PhoneStore {
         const body = {
           phoneNumber: +this.phone,
         };
-        // @ts-expect-error abc
-        const { exist, chatId } = await post(
+
+        const { chatId, exist } = await fetchPost<AccountVerification>(
           `${API_URL}/waInstance${contactsStore.idInstance}/checkAccount/${contactsStore.apiTokenInstance}`,
           body,
           {

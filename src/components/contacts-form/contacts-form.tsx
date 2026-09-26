@@ -1,11 +1,14 @@
 import { observer } from "mobx-react-lite";
 
-import appStore from "../../stores/app-store";
-import contactsStore from "../../stores/contacts-store";
+import appStore from "src/stores/app-store";
+import contactsStore from "src/stores/contacts-store";
+
+import "./contacts-form.scss";
 
 const ContactsForm = observer(() => {
   return (
     <form className="contacts-form">
+      <p>Test</p>
       <div>
         <label>
           Введите Ваш idInstance:

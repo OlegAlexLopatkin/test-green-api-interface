@@ -1,21 +1,16 @@
 import { makeAutoObservable } from "mobx";
 
-export const ScreenStage = {
-  CONTACTS: "contacts",
-  PHONE: "phone",
-  CHAT: "chat",
-} as const;
-
-export type ScreenStage = (typeof ScreenStage)[keyof typeof ScreenStage];
+import { ScreenStage } from "src/constants";
+import type { ScreenStageType } from "src/types";
 
 class AppStore {
-  stage: ScreenStage = ScreenStage.CONTACTS;
+  stage: ScreenStageType = ScreenStage.CONTACTS;
 
   constructor() {
     makeAutoObservable(this);
   }
 
-  setStage(stage: ScreenStage) {
+  setStage(stage: ScreenStageType) {
     this.stage = stage;
   }
 

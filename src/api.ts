@@ -1,12 +1,12 @@
 import axios, { type AxiosResponse, type AxiosRequestConfig } from "axios";
 
-import { API_URL } from "./constants";
+import { API_URL } from "src/constants";
 
 const apiClient = axios.create({
   baseURL: API_URL,
 });
 
-export async function del<T = void>(
+export async function fetchDelete<T = void>(
   url: string,
   config?: AxiosRequestConfig,
 ): Promise<T> {
@@ -14,7 +14,7 @@ export async function del<T = void>(
   return response.data;
 }
 
-export async function get<T>(
+export async function fetchGet<T>(
   url: string,
   config?: AxiosRequestConfig,
 ): Promise<T> {
@@ -22,7 +22,7 @@ export async function get<T>(
   return response.data;
 }
 
-export async function post<T, B = unknown>(
+export async function fetchPost<T, B = unknown>(
   url: string,
   body?: B,
   config?: AxiosRequestConfig,

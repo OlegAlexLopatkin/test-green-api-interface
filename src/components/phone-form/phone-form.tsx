@@ -1,7 +1,9 @@
 import { observer } from "mobx-react-lite";
 
-import appStore from "../../stores/app-store";
-import phoneStore from "../../stores/phone-store";
+import appStore from "src/stores/app-store";
+import phoneStore from "src/stores/phone-store";
+
+import "./phone-form.scss";
 
 const PhoneForm = observer(() => {
   return (

@@ -1,8 +1,8 @@
 import { makeAutoObservable } from "mobx";
 
 class ContactsStore {
-  idInstance = "";
   apiTokenInstance = "";
+  idInstance = "";
 
   constructor() {
     makeAutoObservable(this);

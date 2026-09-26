@@ -1,8 +1,12 @@
 import { useEffect } from "react";
 import { observer } from "mobx-react-lite";
 
-import appStore from "../../stores/app-store";
-import chatStore from "../../stores/chat-store";
+import appStore from "src/stores/app-store";
+import chatStore from "src/stores/chat-store";
+
+import { MAX_MESSAGE_LENGTH } from "src/constants";
+
+import "./chat.scss";
 
 const Chat = observer(() => {
   useEffect(() => {
@@ -26,6 +30,7 @@ const Chat = observer(() => {
         <div>
           <input
             id="message"
+            maxLength={MAX_MESSAGE_LENGTH}
             name="message"
             type="text"
             value={chatStore.message}

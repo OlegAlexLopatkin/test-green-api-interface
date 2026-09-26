@@ -1,22 +1,17 @@
 import { makeAutoObservable } from "mobx";
-import { API_URL } from "../constants/common";
+import { API_URL } from "src/constants/common";
 
-import contactsStore from "./contacts-store";
-import phoneStore from "./phone-store";
+import contactsStore from "src/stores/contacts-store";
+import phoneStore from "src/stores/phone-store";
 
-import { del, get, post } from "../api";
-
-interface IMessage {
-  id: number;
-  type: "income" | "outcome";
-  senderName: string;
-  text: string;
-}
+import { fetchDelete, fetchGet, fetchPost } from "src/api";
+import type { ChatMessage, MessageResponse, Notification } from "src/types";
+import { Message, Webhook } from "src/constants";
 
 class ChatStore {
   isLoading = false;
   message = "";
-  messages: IMessage[] = [];
+  messages: ChatMessage[] = [];
 
   constructor() {
     makeAutoObservable(this);
@@ -30,11 +25,11 @@ class ChatStore {
     this.message = message;
   }
 
-  setMessages(messages: IMessage[]) {
+  setMessages(messages: ChatMessage[]) {
     this.messages = messages;
   }
 
-  addMessage(message: IMessage) {
+  addMessage(message: ChatMessage) {
     const isMessageExist = !!this.messages.find(({ id }) => id === message.id);
     if (isMessageExist) {
       return;
@@ -44,19 +39,19 @@ class ChatStore {
 
   async getNotification() {
     try {
-      const data = await get(
+      const data = await fetchGet<Notification>(
         `${API_URL}/waInstance${contactsStore.idInstance}/receiveNotification/${contactsStore.apiTokenInstance}`,
       );
 
       if (data) {
-        // @ts-expect-error error
         const { receiptId, body } = data;
+
         if (
-          body.typeWebhook === "incomingMessageReceived" &&
-          body.messageData?.typeMessage === "textMessage"
+          body.typeWebhook === Webhook.INCOMING_MESSAGE_RECEIVED &&
+          body.messageData?.typeMessage === Message.TEXT_MESSAGE
         ) {
           const senderName = body.senderData.senderName;
-          const text = body.messageData.textMessageData.textMessage;
+          const text = body.messageData.textMessageData?.textMessage ?? "";
 
           this.addMessage({
             id: receiptId,
@@ -65,10 +60,10 @@ class ChatStore {
             text,
           });
         } else if (
-          body.typeWebhook === "outgoingMessageReceived" &&
-          body.messageData?.typeMessage === "textMessage"
+          body.typeWebhook === Webhook.OUTGOING_MESSAGE_RECEIVED &&
+          body.messageData?.typeMessage === Message.TEXT_MESSAGE
         ) {
-          const text = body.messageData.textMessageData.textMessage;
+          const text = body.messageData.textMessageData?.textMessage ?? "";
           this.addMessage({
             id: receiptId,
             type: "outcome",
@@ -76,10 +71,10 @@ class ChatStore {
             text,
           });
         } else if (
-          body.typeWebhook === "outgoingAPIMessageReceived" &&
-          body.messageData?.typeMessage === "extendedTextMessage"
+          body.typeWebhook === Webhook.OUTGOING_API_MESSAGE_RECEIVED &&
+          body.messageData?.typeMessage === Message.EXTENDED_TEXT_MESSAGE
         ) {
-          const text = body.messageData.extendedTextMessageData.text;
+          const text = body.messageData.extendedTextMessageData?.text ?? "";
           this.addMessage({
             id: receiptId,
             type: "outcome",
@@ -88,8 +83,7 @@ class ChatStore {
           });
         }
 
-        await del(
-          // @ts-expect-error error
+        await fetchDelete(
           `${API_URL}/waInstance${contactsStore.idInstance}/deleteNotification/${contactsStore.apiTokenInstance}/${data.receiptId}`,
           {
             method: "DELETE",
@@ -103,17 +97,18 @@ class ChatStore {
   }
 
   async sendMessage() {
-    if (!this.message.trim()) {
+    const message = this.message.trim();
+    if (!message) {
       return;
     }
 
     try {
       this.setIsLoading(true);
-      await post(
+      await fetchPost<MessageResponse>(
         `${API_URL}/waInstance${contactsStore.idInstance}/sendMessage/${contactsStore.apiTokenInstance}`,
         {
           chatId: phoneStore.chatId,
-          message: this.message.trim(),
+          message,
         },
         {
           headers: {
