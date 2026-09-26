@@ -8,7 +8,6 @@ import "./contacts-form.scss";
 const ContactsForm = observer(() => {
   return (
     <form className="contacts-form">
-      <p>Test</p>
       <div>
         <label>
           Введите Ваш idInstance:

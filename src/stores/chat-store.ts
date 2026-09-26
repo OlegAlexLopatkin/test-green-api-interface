@@ -85,9 +85,6 @@ class ChatStore {
 
         await fetchDelete(
           `${API_URL}/waInstance${contactsStore.idInstance}/deleteNotification/${contactsStore.apiTokenInstance}/${data.receiptId}`,
-          {
-            method: "DELETE",
-          },
         );
       }
     } catch (e) {
