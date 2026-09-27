@@ -30,11 +30,7 @@ const PhoneForm = observer(() => {
 
         <p className="phone-form__text">Номер телефона собеседника:</p>
 
-        <PhoneNumberInput
-          value={phone}
-          onChange={setPhone}
-          // onCountryChange={onCountryChange}
-        />
+        <PhoneNumberInput value={phone} onChange={setPhone} />
 
         <Button
           disabled={!isValidPhone}

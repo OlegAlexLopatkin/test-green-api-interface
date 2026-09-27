@@ -1,6 +1,5 @@
 .phone-form {
   align-items: center;
-  backdrop-filter: blur(25px);
   background: linear-gradient(
     rgba(255, 255, 255, 0.64),
     rgba(255, 255, 255, 0.88)
@@ -55,7 +54,7 @@
   font-weight: 600;
   line-height: 24px;
   text-align: center;
-  padding: 0 0 23px;
+  padding: 23px 0 0;
 }
 
 .phone-form__icon-button {
