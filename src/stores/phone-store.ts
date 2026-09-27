@@ -1,4 +1,5 @@
 import { makeAutoObservable } from "mobx";
+import { isPossiblePhoneNumber } from "react-phone-number-input";
 
 import appStore from "src/stores/app-store";
 import contactsStore from "src/stores/contacts-store";
@@ -10,10 +11,10 @@ import type { AccountVerification } from "src/types";
 class PhoneStore {
   chatId = "";
   isLoading = false;
-  phone = "";
+  phone: string | undefined;
 
   constructor() {
-    makeAutoObservable(this);
+    makeAutoObservable(this, {}, { autoBind: true });
   }
 
   setChatId(chatId: string) {
@@ -24,20 +25,21 @@ class PhoneStore {
     this.isLoading = isLoading;
   }
 
-  setPhone(phone: string) {
-    this.phone = phone.replace(/\D/, "");
+  setPhone(phone: string | undefined) {
+    this.phone = phone;
   }
 
-  validatePhone() {
-    return this.phone.length === 11;
+  get isValidPhone() {
+    return this.phone && isPossiblePhoneNumber(this.phone);
   }
 
   async nextButtonClickHandler() {
-    if (this.validatePhone()) {
+    if (!!this.phone && this.isValidPhone) {
       this.setIsLoading(true);
+
       try {
         const body = {
-          phoneNumber: +this.phone,
+          phoneNumber: Number(this.phone.replace(/\D/, "")),
         };
 
         const { chatId, exist } = await fetchPost<AccountVerification>(

@@ -3,31 +3,45 @@ import { observer } from "mobx-react-lite";
 import appStore from "src/stores/app-store";
 import phoneStore from "src/stores/phone-store";
 
+import { BsArrowLeftShort } from "react-icons/bs";
+import Button from "src/components/ui/button";
+import IconButton from "src/components/ui/icon-button";
+import PhoneNumberInput from "src/components/ui/phone-number-input";
+
+import "react-phone-number-input/style.css";
 import "./phone-form.scss";
 
 const PhoneForm = observer(() => {
+  const { isValidPhone, phone, nextButtonClickHandler, setPhone } = phoneStore;
+
   return (
     <form className="phone-form">
-      <div>
-        <label>
-          Введите номер телефона:
-          <input
-            id="idInstance"
-            name="idInstance"
-            required
-            type="phone"
-            value={phoneStore.phone}
-            onChange={(e) => phoneStore.setPhone(e.target.value)}
+      <div className="phone-form__wrapper">
+        <div className="phone-form__title-wrapper">
+          <IconButton
+            aria-label="На предыдущую страницу"
+            icon={<BsArrowLeftShort color="rgba(6, 7, 8, 0.84)" size={24} />}
+            className="phone-form__icon-button"
+            onClick={appStore.previousStage}
           />
-        </label>
-      </div>
 
-      <button type="button" onClick={() => appStore.previousStage()}>
-        Назад
-      </button>
-      <button type="button" onClick={() => phoneStore.nextButtonClickHandler()}>
-        Дальше
-      </button>
+          <h1 className="phone-form__title">GREEN-API MAX</h1>
+        </div>
+
+        <p className="phone-form__text">Номер телефона собеседника:</p>
+
+        <PhoneNumberInput
+          value={phone}
+          onChange={setPhone}
+          // onCountryChange={onCountryChange}
+        />
+
+        <Button
+          disabled={!isValidPhone}
+          label="Дальше"
+          onClick={nextButtonClickHandler}
+        />
+      </div>
     </form>
   );
 });
