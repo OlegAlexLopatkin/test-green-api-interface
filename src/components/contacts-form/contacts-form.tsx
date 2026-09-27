@@ -3,41 +3,52 @@ import { observer } from "mobx-react-lite";
 import appStore from "src/stores/app-store";
 import contactsStore from "src/stores/contacts-store";
 
+import Button from "src/components/ui/button";
+import Input from "src/components/ui/input";
+
 import "./contacts-form.scss";
 
 const ContactsForm = observer(() => {
+  const {
+    apiTokenInstance,
+    idInstance,
+    isFormValid,
+    setApiTokenInstance,
+    setIdInstance,
+  } = contactsStore;
+
   return (
     <form className="contacts-form">
-      <div>
-        <label>
-          Введите Ваш idInstance:
-          <input
-            id="idInstance"
-            name="idInstance"
-            required
-            type="text"
-            value={contactsStore.idInstance}
-            onChange={(e) => contactsStore.setIdInstance(e.target.value)}
-          />
-        </label>
-      </div>
-      <div>
-        <label>
-          Введите Ваш apiTokenInstance:
-          <input
-            id="apiTokenInstance"
-            name="apiTokenInstance"
-            required
-            type="text"
-            value={contactsStore.apiTokenInstance}
-            onChange={(e) => contactsStore.setApiTokenInstance(e.target.value)}
-          />
-        </label>
-      </div>
+      <div className="contacts-form__wrapper">
+        <h1 className="contacts-form__title">GREEN-API MAX</h1>
 
-      <button type="button" onClick={() => appStore.nextStage()}>
-        Дальше
-      </button>
+        <Input
+          id="idInstance"
+          autoFocus
+          name="idInstance"
+          placeholder="idInstance"
+          required
+          type="text"
+          value={idInstance}
+          onChange={setIdInstance}
+        />
+
+        <Input
+          id="apiTokenInstance"
+          name="apiTokenInstance"
+          placeholder="apiTokenInstance"
+          required
+          type="text"
+          value={apiTokenInstance}
+          onChange={setApiTokenInstance}
+        />
+
+        <Button
+          label="Дальше"
+          disabled={!isFormValid}
+          onClick={appStore.nextStage}
+        />
+      </div>
     </form>
   );
 });

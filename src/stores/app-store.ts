@@ -7,7 +7,7 @@ class AppStore {
   stage: ScreenStageType = ScreenStage.CONTACTS;
 
   constructor() {
-    makeAutoObservable(this);
+    makeAutoObservable(this, {}, { autoBind: true });
   }
 
   setStage(stage: ScreenStageType) {

@@ -14,7 +14,7 @@ class ChatStore {
   messages: ChatMessage[] = [];
 
   constructor() {
-    makeAutoObservable(this);
+    makeAutoObservable(this, {}, { autoBind: true });
   }
 
   setIsLoading(isLoading: boolean) {

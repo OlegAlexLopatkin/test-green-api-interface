@@ -1,0 +1,47 @@
+.button {
+  background-color: #007aff;
+  border: none;
+  border-radius: 20px;
+  box-sizing: border-box;
+  color: #ffffff;
+  cursor: pointer;
+  font-family: "Roboto", sans-serif;
+  font-size: 17px;
+  font-weight: 500;
+  height: 60px;
+  letter-spacing: 0.15px;
+  line-height: 20px;
+  padding: 18px 22px;
+  text-align: center;
+  user-select: none;
+  white-space: nowrap;
+  width: 100%;
+
+  &:hover:not(:disabled) {
+    background-color: #479fff;
+  }
+
+  &:active:not(:disabled) {
+    background-color: #006ee5;
+  }
+
+  &:focus {
+    outline: 2px solid #007aff;
+    outline-offset: 2px;
+  }
+
+  &:focus:not(:focus-visible) {
+    outline: none;
+  }
+
+  &:focus-visible {
+    outline: 2px solid #007aff;
+    outline-offset: 2px;
+  }
+
+  &:disabled {
+    background-color: rgba(0, 122, 255, 0.48);
+    color: rgba(255, 255, 255, 0.72);
+    cursor: auto;
+  }
+}

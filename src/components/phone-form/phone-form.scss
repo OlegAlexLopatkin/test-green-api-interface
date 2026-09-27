@@ -1,5 +1,64 @@
 .phone-form {
-  display: grid;
-  gap: 10px;
-  max-width: 580px;
+  align-items: center;
+  background: linear-gradient(
+    rgba(255, 255, 255, 0.64),
+    rgba(255, 255, 255, 0.88)
+  );
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  justify-content: center;
+  padding: 16px;
+  width: 100vw;
+
+  @media screen and (min-width: 580px) {
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    border-radius: 28px;
+    box-shadow: 0 4px 24px rgba(0, 0, 0, 0.08);
+    height: 380px;
+    justify-content: flex-end;
+    padding: 32px;
+    width: 580px;
+  }
+}
+
+.phone-form__wrapper {
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  justify-content: flex-end;
+  max-width: 336px;
+  min-height: 314px;
+  width: 100%;
+}
+
+.phone-form__title-wrapper {
+  position: relative;
+}
+
+.phone-form__title {
+  color: #060708;
+  font-family: "Roboto", sans-serif;
+  font-size: 24px;
+  font-weight: 700;
+  line-height: 40px;
+  text-align: center;
+}
+
+.phone-form__text {
+  color: #060708;
+  font-family: "Roboto", sans-serif;
+  font-size: 20px;
+  font-weight: 600;
+  line-height: 24px;
+  text-align: center;
+  padding: 23px 0 0;
+}
+
+.phone-form__icon-button {
+  left: 0;
+  position: absolute;
+  top: 0;
 }

@@ -5,7 +5,7 @@ class ContactsStore {
   idInstance = "";
 
   constructor() {
-    makeAutoObservable(this);
+    makeAutoObservable(this, {}, { autoBind: true });
   }
 
   setApiTokenInstance(apiTokenInstance: string) {
@@ -14,6 +14,10 @@ class ContactsStore {
 
   setIdInstance(idInstance: string) {
     this.idInstance = idInstance;
+  }
+
+  get isFormValid() {
+    return !!this.apiTokenInstance.trim() && !!this.idInstance.trim();
   }
 
   saveContacts(idInstance: string, apiTokenInstance: string) {

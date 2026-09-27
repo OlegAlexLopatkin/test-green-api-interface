@@ -1,0 +1,20 @@
+.phone-number-input {
+  background-color: #f2f2f2;
+  border-radius: 16px;
+  font-size: 16px;
+  padding: 6px 12px;
+
+  .PhoneInputInput {
+    background-color: #f2f2f2;
+    border: none;
+    box-sizing: border-box;
+    color: #060708;
+    font-family: "Roboto", sans-serif;
+    font-size: 16px;
+    font-weight: 400;
+    height: 40px;
+    line-height: 40px;
+    outline: none;
+    width: 100%;
+  }
+}
