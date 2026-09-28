@@ -14,7 +14,7 @@ import "./chat-header.scss";
 
 const ChatHeader = observer(() => {
   const navigate = useNavigate();
-  const handleClick = useCallback(() => {
+  const handleButtonClick = useCallback(() => {
     appStore.previousStage();
     navigate(AppRoutes.MAIN_PAGE);
   }, [navigate]);
@@ -25,7 +25,7 @@ const ChatHeader = observer(() => {
         <IconButton
           aria-label="На предыдущую страницу"
           icon={<BsArrowLeftShort color="rgba(6, 7, 8, 0.84)" size={24} />}
-          onClick={handleClick}
+          onClick={handleButtonClick}
         />
 
         <span className="chat-header__phone">{phoneStore.formattedPhone}</span>
