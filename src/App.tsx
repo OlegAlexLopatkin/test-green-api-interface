@@ -1,19 +1,28 @@
 import { observer } from "mobx-react-lite";
+import { Navigate, Route, Routes } from "react-router";
 
-import appStore from "src/stores/app-store";
-import Chat from "src/components/chat";
-import ContactsForm from "src/components/contacts-form";
-import PhoneForm from "src/components/phone-form";
+import ChatPage from "src/pages/chat-page";
+import MainPage from "src/pages/main-page";
+import ProtectedRoute from "src/components/common/protected-route";
 
-import "./App.scss";
+import phoneStore from "src/stores/phone-store";
+
+import { AppRoutes } from "src/constants";
 
 const App = observer(() => {
   return (
-    <div className="app">
-      {appStore.isContactsScreen && <ContactsForm />}
-      {appStore.isPhoneScreen && <PhoneForm />}
-      {appStore.isChatScreen && <Chat />}
-    </div>
+    <Routes>
+      <Route path={AppRoutes.MAIN_PAGE} element={<MainPage />} />
+      <Route
+        path={AppRoutes.CHAT_PAGE}
+        element={
+          <ProtectedRoute isAuthenticated={!!phoneStore.chatId}>
+            <ChatPage />
+          </ProtectedRoute>
+        }
+      />
+      <Route path="*" element={<Navigate replace to={AppRoutes.MAIN_PAGE} />} />
+    </Routes>
   );
 });
 

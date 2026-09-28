@@ -1,9 +1,8 @@
-.phone-form {
+@use "src/styles/variables" as *;
+
+.contacts-form {
   align-items: center;
-  background: linear-gradient(
-    rgba(255, 255, 255, 0.64),
-    rgba(255, 255, 255, 0.88)
-  );
+  background-color: $white-color;
   box-sizing: border-box;
   display: flex;
   flex-direction: column;
@@ -23,7 +22,7 @@
   }
 }
 
-.phone-form__wrapper {
+.contacts-form__wrapper {
   box-sizing: border-box;
   display: flex;
   flex-direction: column;
@@ -34,31 +33,11 @@
   width: 100%;
 }
 
-.phone-form__title-wrapper {
-  position: relative;
-}
-
-.phone-form__title {
-  color: #060708;
-  font-family: "Roboto", sans-serif;
+.contacts-form__title {
+  color: $text-color-primary;
+  font-family: $font;
   font-size: 24px;
-  font-weight: 700;
-  line-height: 40px;
+  font-weight: $font-weight-bold;
+  line-height: 30px;
   text-align: center;
-}
-
-.phone-form__text {
-  color: #060708;
-  font-family: "Roboto", sans-serif;
-  font-size: 20px;
-  font-weight: 600;
-  line-height: 24px;
-  text-align: center;
-  padding: 23px 0 0;
-}
-
-.phone-form__icon-button {
-  left: 0;
-  position: absolute;
-  top: 0;
 }

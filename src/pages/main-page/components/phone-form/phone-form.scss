@@ -1,10 +1,9 @@
-.contacts-form {
+@use "src/styles/variables" as *;
+
+.phone-form {
   align-items: center;
+  background-color: $white-color;
   box-sizing: border-box;
-  background: linear-gradient(
-    rgba(255, 255, 255, 0.64),
-    rgba(255, 255, 255, 0.88)
-  );
   display: flex;
   flex-direction: column;
   height: 100vh;
@@ -23,7 +22,7 @@
   }
 }
 
-.contacts-form__wrapper {
+.phone-form__wrapper {
   box-sizing: border-box;
   display: flex;
   flex-direction: column;
@@ -34,11 +33,31 @@
   width: 100%;
 }
 
-.contacts-form__title {
-  color: #060708;
+.phone-form__title-wrapper {
+  position: relative;
+}
+
+.phone-form__title {
+  color: $text-color-primary;
   font-family: "Roboto", sans-serif;
   font-size: 24px;
-  font-weight: 700;
-  line-height: 30px;
+  font-weight: $font-weight-bold;
+  line-height: 40px;
   text-align: center;
+}
+
+.phone-form__text {
+  color: $text-color-primary;
+  font-family: "Roboto", sans-serif;
+  font-size: 20px;
+  font-weight: $font-weight-semibold;
+  line-height: 24px;
+  text-align: center;
+  padding: 23px 0 0;
+}
+
+.phone-form__icon-button {
+  left: 0;
+  position: absolute;
+  top: 0;
 }

@@ -1,3 +1,5 @@
+@use "src/styles/variables" as *;
+
 .icon-button {
   align-items: center;
   background-color: transparent;
@@ -23,7 +25,7 @@
   }
 
   &:focus {
-    outline: 2px solid #007aff;
+    outline: 2px solid $button-color-primary;
     outline-offset: 2px;
   }
 
@@ -32,7 +34,7 @@
   }
 
   &:focus-visible {
-    outline: 2px solid #007aff;
+    outline: 2px solid $button-color-primary;
     outline-offset: 2px;
   }
 }

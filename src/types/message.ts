@@ -4,7 +4,7 @@ export interface MessageResponse {
 
 export interface ChatMessage {
   id: number;
-  senderName: string;
   type: "income" | "outcome";
   text: string;
+  timestamp: number;
 }

@@ -1,16 +1,18 @@
+@use "src/styles/variables" as *;
+
 .input {
   width: 100%;
 }
 
 .input__input {
-  background-color: #0909090d;
+  background-color: $input-background-color;
   border: none;
   border-radius: 16px;
   box-sizing: border-box;
-  color: #060708;
-  font-family: "Roboto", sans-serif;
-  font-size: 16px;
-  font-weight: 400;
+  color: $text-color-primary;
+  font-family: $font;
+  font-size: $main-font-size;
+  font-weight: $font-weight-normal;
   height: 52px;
   line-height: 40px;
   outline: none;
