@@ -26,6 +26,7 @@ const ChatForm = observer(() => {
         <textarea
           className="chat-form__textarea"
           id="message"
+          autoFocus
           disabled={isLoading}
           maxLength={MAX_MESSAGE_LENGTH}
           name="message"
@@ -40,6 +41,7 @@ const ChatForm = observer(() => {
           aria-label="Отправить сообщение"
           disabled={isLoading || !isMessageValid}
           icon={<BsArrowUpShort color="#ffffff" size={24} />}
+          theme="primary"
           type="submit"
           onClick={sendMessage}
         />
