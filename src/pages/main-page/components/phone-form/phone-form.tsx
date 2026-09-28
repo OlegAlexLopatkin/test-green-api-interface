@@ -1,4 +1,5 @@
 import { observer } from "mobx-react-lite";
+import { useNavigate } from "react-router";
 
 import appStore from "src/stores/app-store";
 import phoneStore from "src/stores/phone-store";
@@ -10,9 +11,15 @@ import PhoneNumberInput from "src/components/ui/phone-number-input";
 
 import "react-phone-number-input/style.css";
 import "./phone-form.scss";
+import { useCallback } from "react";
 
 const PhoneForm = observer(() => {
+  const navigate = useNavigate();
   const { isValidPhone, phone, nextButtonClickHandler, setPhone } = phoneStore;
+
+  const handleButtonClick = useCallback(() => {
+    nextButtonClickHandler(navigate);
+  }, [navigate, nextButtonClickHandler]);
 
   return (
     <form className="phone-form">
@@ -35,7 +42,7 @@ const PhoneForm = observer(() => {
         <Button
           disabled={!isValidPhone}
           label="Дальше"
-          onClick={nextButtonClickHandler}
+          onClick={handleButtonClick}
         />
       </div>
     </form>

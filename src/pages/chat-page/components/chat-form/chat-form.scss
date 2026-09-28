@@ -1,0 +1,78 @@
+@use "src/styles/variables" as *;
+
+.chat-form {
+  background-color: $page-background-color;
+  box-sizing: border-box;
+  padding: 0 16px 16px;
+  width: 100%;
+}
+
+.chat-form__input-wrapper {
+  align-items: end;
+  background-color: $white-color;
+  border-radius: 16px;
+  box-sizing: border-box;
+  display: grid;
+  gap: 16px;
+  grid-template-columns: 1fr auto;
+  margin: 0 auto;
+  max-width: 700px;
+  overflow: hidden;
+  padding: 0 12px 0 16px;
+  position: relative;
+  width: 100%;
+}
+
+.chat-form__textarea {
+  border: none;
+  box-sizing: border-box;
+  color: $text-color-primary;
+  font-family: $font;
+  font-size: $main-font-size;
+  font-weight: $font-weight-normal;
+  outline: none;
+  padding: 4px;
+  resize: none;
+  height: 100px;
+  user-select: text;
+  white-space: pre-wrap;
+  width: 100%;
+  word-break: break-word;
+}
+
+.chat-form__send-message-button {
+  background-color: $button-color-primary;
+  border-radius: 50%;
+  bottom: 8px;
+  height: 32px;
+  position: relative;
+  width: 32px;
+
+  &:hover:not(:disabled) {
+    background-color: $button-color-primary-hover;
+  }
+
+  &:active:not(:disabled) {
+    background-color: $button-color-primary-active;
+  }
+
+  &:focus {
+    outline: 2px solid $button-color-primary;
+    outline-offset: 2px;
+  }
+
+  &:focus:not(:focus-visible) {
+    outline: none;
+  }
+
+  &:focus-visible {
+    outline: 2px solid $button-color-primary;
+    outline-offset: 2px;
+  }
+
+  &:disabled {
+    background-color: $button-color-primary-disabled;
+    color: $text-color-disabled;
+    cursor: auto;
+  }
+}

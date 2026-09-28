@@ -29,6 +29,10 @@ class ChatStore {
     this.messages = messages;
   }
 
+  get isMessageValid() {
+    return !!this.message.trim();
+  }
+
   addMessage(message: ChatMessage) {
     const isMessageExist = !!this.messages.find(({ id }) => id === message.id);
     if (isMessageExist) {
@@ -50,36 +54,38 @@ class ChatStore {
           body.typeWebhook === Webhook.INCOMING_MESSAGE_RECEIVED &&
           body.messageData?.typeMessage === Message.TEXT_MESSAGE
         ) {
-          const senderName = body.senderData.senderName;
           const text = body.messageData.textMessageData?.textMessage ?? "";
+          const timestamp = body.timestamp * 1000;
 
           this.addMessage({
             id: receiptId,
-            type: "income",
-            senderName: senderName,
             text,
+            timestamp,
+            type: "income",
           });
         } else if (
           body.typeWebhook === Webhook.OUTGOING_MESSAGE_RECEIVED &&
           body.messageData?.typeMessage === Message.TEXT_MESSAGE
         ) {
           const text = body.messageData.textMessageData?.textMessage ?? "";
+          const timestamp = body.timestamp * 1000;
           this.addMessage({
             id: receiptId,
-            type: "outcome",
-            senderName: "Вы",
             text,
+            timestamp,
+            type: "outcome",
           });
         } else if (
           body.typeWebhook === Webhook.OUTGOING_API_MESSAGE_RECEIVED &&
           body.messageData?.typeMessage === Message.EXTENDED_TEXT_MESSAGE
         ) {
           const text = body.messageData.extendedTextMessageData?.text ?? "";
+          const timestamp = body.timestamp * 1000;
           this.addMessage({
             id: receiptId,
-            type: "outcome",
-            senderName: "Вы",
             text,
+            timestamp,
+            type: "outcome",
           });
         }
 
@@ -94,8 +100,7 @@ class ChatStore {
   }
 
   async sendMessage() {
-    const message = this.message.trim();
-    if (!message) {
+    if (!this.isMessageValid) {
       return;
     }
 
@@ -105,7 +110,7 @@ class ChatStore {
         `${API_URL}/waInstance${contactsStore.idInstance}/sendMessage/${contactsStore.apiTokenInstance}`,
         {
           chatId: phoneStore.chatId,
-          message,
+          message: this.message.trim(),
         },
         {
           headers: {
