@@ -1,16 +1,24 @@
 import { makeAutoObservable } from "mobx";
-import { API_URL } from "src/constants/common";
+import { toast } from "react-toastify";
+import { AxiosError } from "axios";
 
 import contactsStore from "src/stores/contacts-store";
 import phoneStore from "src/stores/phone-store";
 
 import { fetchDelete, fetchGet, fetchPost } from "src/api";
 import type { ChatMessage, MessageResponse, Notification } from "src/types";
-import { Message, Webhook } from "src/constants";
+import {
+  API_URL,
+  ChatMessageType,
+  MessageType,
+  TextErrors,
+  ToastIds,
+  Webhook,
+} from "src/constants";
 
 class ChatStore {
   isLoading = false;
-  message = "";
+  messageInputValue = "";
   messages: ChatMessage[] = [];
 
   constructor() {
@@ -21,8 +29,8 @@ class ChatStore {
     this.isLoading = isLoading;
   }
 
-  setMessage(message: string) {
-    this.message = message;
+  setMessageInputValue(messageInputValue: string) {
+    this.messageInputValue = messageInputValue;
   }
 
   setMessages(messages: ChatMessage[]) {
@@ -30,7 +38,7 @@ class ChatStore {
   }
 
   get isMessageValid() {
-    return !!this.message.trim();
+    return !!this.messageInputValue.trim();
   }
 
   addMessage(message: ChatMessage) {
@@ -52,7 +60,7 @@ class ChatStore {
 
         if (
           body.typeWebhook === Webhook.INCOMING_MESSAGE_RECEIVED &&
-          body.messageData?.typeMessage === Message.TEXT_MESSAGE
+          body.messageData?.typeMessage === MessageType.TEXT_MESSAGE
         ) {
           const text = body.messageData.textMessageData?.textMessage ?? "";
           const timestamp = body.timestamp * 1000;
@@ -61,11 +69,11 @@ class ChatStore {
             id: receiptId,
             text,
             timestamp,
-            type: "income",
+            type: ChatMessageType.INCOME,
           });
         } else if (
           body.typeWebhook === Webhook.OUTGOING_MESSAGE_RECEIVED &&
-          body.messageData?.typeMessage === Message.TEXT_MESSAGE
+          body.messageData?.typeMessage === MessageType.TEXT_MESSAGE
         ) {
           const text = body.messageData.textMessageData?.textMessage ?? "";
           const timestamp = body.timestamp * 1000;
@@ -73,11 +81,11 @@ class ChatStore {
             id: receiptId,
             text,
             timestamp,
-            type: "outcome",
+            type: ChatMessageType.OUTCOME,
           });
         } else if (
           body.typeWebhook === Webhook.OUTGOING_API_MESSAGE_RECEIVED &&
-          body.messageData?.typeMessage === Message.EXTENDED_TEXT_MESSAGE
+          body.messageData?.typeMessage === MessageType.EXTENDED_TEXT_MESSAGE
         ) {
           const text = body.messageData.extendedTextMessageData?.text ?? "";
           const timestamp = body.timestamp * 1000;
@@ -85,7 +93,7 @@ class ChatStore {
             id: receiptId,
             text,
             timestamp,
-            type: "outcome",
+            type: ChatMessageType.OUTCOME,
           });
         }
 
@@ -94,7 +102,10 @@ class ChatStore {
         );
       }
     } catch (e) {
-      console.error(e);
+      console.log(e);
+      toast.error(TextErrors[ToastIds.ERROR_EXECUTING_REQUEST], {
+        toastId: ToastIds.ERROR_EXECUTING_REQUEST,
+      });
       await new Promise((resolve) => setTimeout(resolve, 5000));
     }
   }
@@ -110,7 +121,7 @@ class ChatStore {
         `${API_URL}/waInstance${contactsStore.idInstance}/sendMessage/${contactsStore.apiTokenInstance}`,
         {
           chatId: phoneStore.chatId,
-          message: this.message.trim(),
+          message: this.messageInputValue.trim(),
         },
         {
           headers: {
@@ -118,9 +129,17 @@ class ChatStore {
           },
         },
       );
-      this.setMessage("");
+      this.setMessageInputValue("");
     } catch (e) {
-      console.log(e);
+      if (e instanceof AxiosError && e.status === 403) {
+        toast.error(TextErrors[ToastIds.YOUR_ACCOUNT_IS_SUSPEND], {
+          toastId: ToastIds.YOUR_ACCOUNT_IS_SUSPEND,
+        });
+      } else {
+        toast.error(TextErrors[ToastIds.SOMETHING_WENT_WRONG], {
+          toastId: ToastIds.SOMETHING_WENT_WRONG,
+        });
+      }
     } finally {
       this.setIsLoading(false);
     }

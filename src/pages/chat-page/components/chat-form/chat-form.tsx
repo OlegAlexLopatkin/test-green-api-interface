@@ -11,13 +11,18 @@ import { MAX_MESSAGE_LENGTH } from "src/constants";
 import "./chat-form.scss";
 
 const ChatForm = observer(() => {
-  const { isLoading, isMessageValid, message, sendMessage, setMessage } =
-    chatStore;
+  const {
+    isLoading,
+    isMessageValid,
+    messageInputValue,
+    sendMessage,
+    setMessageInputValue,
+  } = chatStore;
 
   const handleChange = useCallback(
     (e: ChangeEvent<HTMLTextAreaElement, HTMLTextAreaElement>) =>
-      setMessage(e.target.value),
-    [setMessage],
+      setMessageInputValue(e.target.value),
+    [setMessageInputValue],
   );
 
   return (
@@ -30,7 +35,7 @@ const ChatForm = observer(() => {
           disabled={isLoading}
           maxLength={MAX_MESSAGE_LENGTH}
           name="message"
-          value={message}
+          value={messageInputValue}
           onChange={handleChange}
         >
           Сообщение

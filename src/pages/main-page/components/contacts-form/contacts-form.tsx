@@ -1,6 +1,5 @@
 import { observer } from "mobx-react-lite";
 
-import appStore from "src/stores/app-store";
 import contactsStore from "src/stores/contacts-store";
 
 import Button from "src/components/ui/button";
@@ -12,7 +11,7 @@ const ContactsForm = observer(() => {
   const {
     apiTokenInstance,
     idInstance,
-    isFormValid,
+    handleNextButtonClick,
     setApiTokenInstance,
     setIdInstance,
   } = contactsStore;
@@ -43,11 +42,7 @@ const ContactsForm = observer(() => {
           onChange={setApiTokenInstance}
         />
 
-        <Button
-          label="Дальше"
-          disabled={!isFormValid}
-          onClick={appStore.nextStage}
-        />
+        <Button label="Дальше" onClick={handleNextButtonClick} />
       </div>
     </form>
   );
