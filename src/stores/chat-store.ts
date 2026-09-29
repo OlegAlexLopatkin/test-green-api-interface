@@ -1,4 +1,4 @@
-import { makeAutoObservable } from "mobx";
+import { makeAutoObservable, reaction } from "mobx";
 import { toast } from "react-toastify";
 import { AxiosError } from "axios";
 
@@ -23,6 +23,14 @@ class ChatStore {
 
   constructor() {
     makeAutoObservable(this, {}, { autoBind: true });
+
+    reaction(
+      () => phoneStore.chatId,
+      () => {
+        this.setMessageInputValue("");
+        this.setMessages([]);
+      },
+    );
   }
 
   setIsLoading(isLoading: boolean) {
@@ -56,7 +64,7 @@ class ChatStore {
       );
 
       if (data) {
-        const { receiptId, body } = data;
+        const { body, receiptId } = data;
 
         if (
           body.typeWebhook === Webhook.INCOMING_MESSAGE_RECEIVED &&
@@ -66,7 +74,7 @@ class ChatStore {
           const timestamp = body.timestamp * 1000;
 
           this.addMessage({
-            id: receiptId,
+            id: body.idMessage,
             text,
             timestamp,
             type: ChatMessageType.INCOME,
@@ -78,7 +86,7 @@ class ChatStore {
           const text = body.messageData.textMessageData?.textMessage ?? "";
           const timestamp = body.timestamp * 1000;
           this.addMessage({
-            id: receiptId,
+            id: body.idMessage,
             text,
             timestamp,
             type: ChatMessageType.OUTCOME,
@@ -90,7 +98,7 @@ class ChatStore {
           const text = body.messageData.extendedTextMessageData?.text ?? "";
           const timestamp = body.timestamp * 1000;
           this.addMessage({
-            id: receiptId,
+            id: body.idMessage,
             text,
             timestamp,
             type: ChatMessageType.OUTCOME,
@@ -98,7 +106,7 @@ class ChatStore {
         }
 
         await fetchDelete(
-          `${API_URL}/waInstance${contactsStore.idInstance}/deleteNotification/${contactsStore.apiTokenInstance}/${data.receiptId}`,
+          `${API_URL}/waInstance${contactsStore.idInstance}/deleteNotification/${contactsStore.apiTokenInstance}/${receiptId}`,
         );
       }
     } catch (e) {
