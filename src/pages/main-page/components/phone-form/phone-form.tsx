@@ -15,7 +15,7 @@ import { useCallback } from "react";
 
 const PhoneForm = observer(() => {
   const navigate = useNavigate();
-  const { phone, handleNextButtonClick, setPhone } = phoneStore;
+  const { isLoading, phone, handleNextButtonClick, setPhone } = phoneStore;
 
   const handleButtonClick = useCallback(() => {
     handleNextButtonClick(navigate);
@@ -26,9 +26,10 @@ const PhoneForm = observer(() => {
       <div className="phone-form__wrapper">
         <div className="phone-form__title-wrapper">
           <IconButton
-            aria-label="На предыдущую страницу"
-            icon={<BsArrowLeftShort color="rgba(6, 7, 8, 0.84)" size={24} />}
             className="phone-form__icon-button"
+            aria-label="На предыдущую страницу"
+            disabled={isLoading}
+            icon={<BsArrowLeftShort color="rgba(6, 7, 8, 0.84)" size={24} />}
             onClick={appStore.previousStage}
           />
 
@@ -39,7 +40,11 @@ const PhoneForm = observer(() => {
 
         <PhoneNumberInput value={phone} onChange={setPhone} />
 
-        <Button label="Дальше" onClick={handleButtonClick} />
+        <Button
+          disabled={isLoading}
+          label="Дальше"
+          onClick={handleButtonClick}
+        />
       </div>
     </form>
   );

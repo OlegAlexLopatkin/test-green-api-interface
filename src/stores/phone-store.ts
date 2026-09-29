@@ -64,7 +64,6 @@ class PhoneStore {
       return;
     }
 
-    this.setIsLoading(true);
     const phoneNumber = Number(this.phone.replace(/\D/, ""));
     if (phoneNumber === this.prevPhone && !!this.chatId) {
       appStore.nextStage();
@@ -73,6 +72,7 @@ class PhoneStore {
     }
 
     try {
+      this.setIsLoading(true);
       const body = {
         phoneNumber,
       };

@@ -108,6 +108,8 @@ class ChatStore {
         await fetchDelete(
           `${API_URL}/waInstance${contactsStore.idInstance}/deleteNotification/${contactsStore.apiTokenInstance}/${receiptId}`,
         );
+      } else {
+        await new Promise((resolve) => setTimeout(resolve, 2000));
       }
     } catch (e) {
       console.log(e);

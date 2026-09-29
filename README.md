@@ -2,7 +2,7 @@
 
 ## Запуск проекта.
 
-В файле `public/config.js` в `window.API_URL` подставить ваше знаение `apiUrl`.
+В файле `public/config.js` в `window.API_URL` подставить Ваше знаение `apiUrl`.
 
 Потом выполнить команды:
 

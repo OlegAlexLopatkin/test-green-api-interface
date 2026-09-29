@@ -32,7 +32,6 @@ const ChatForm = observer(() => {
           className="chat-form__textarea"
           id="message"
           autoFocus
-          disabled={isLoading}
           maxLength={MAX_MESSAGE_LENGTH}
           name="message"
           value={messageInputValue}
