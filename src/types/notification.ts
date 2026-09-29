@@ -28,15 +28,19 @@ interface MessageData {
 }
 
 interface NotificationBody {
+  chatId?: string;
   typeWebhook: WebhookType;
   instanceData: InstanceData;
   timestamp: number;
   idMessage: string;
-  senderData: SenderData;
-  messageData: MessageData;
+  senderData?: SenderData;
+  status?: string;
+  messageData?: MessageData;
 }
 
-export interface Notification {
+export interface NotificationObject {
   receiptId: number;
   body: NotificationBody;
 }
+
+export type Notification = NotificationObject | null;

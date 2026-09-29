@@ -5,7 +5,7 @@ export interface MessageResponse {
 }
 
 export interface ChatMessage {
-  id: number;
+  id: string;
   type: ChatMessageType;
   text: string;
   timestamp: number;

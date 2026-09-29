@@ -29,12 +29,12 @@ class PhoneStore {
     this.chatId = chatId;
   }
 
-  setIsLoading(isLoading: boolean) {
-    this.isLoading = isLoading;
-  }
-
   setFormattedPhone(phone: string) {
     this.formattedPhone = phone;
+  }
+
+  setIsLoading(isLoading: boolean) {
+    this.isLoading = isLoading;
   }
 
   setPhone(phone: string | undefined) {
@@ -64,7 +64,6 @@ class PhoneStore {
       return;
     }
 
-    this.setIsLoading(true);
     const phoneNumber = Number(this.phone.replace(/\D/, ""));
     if (phoneNumber === this.prevPhone && !!this.chatId) {
       appStore.nextStage();
@@ -73,6 +72,7 @@ class PhoneStore {
     }
 
     try {
+      this.setIsLoading(true);
       const body = {
         phoneNumber,
       };
@@ -93,7 +93,7 @@ class PhoneStore {
         appStore.nextStage();
         navigate(AppRoutes.CHAT_PAGE);
       } else {
-        toast(TextErrors[ToastIds.ACCOUNT_DOES_NOT_EXIST], {
+        toast.error(TextErrors[ToastIds.ACCOUNT_DOES_NOT_EXIST], {
           toastId: ToastIds.ACCOUNT_DOES_NOT_EXIST,
         });
         this.setChatId("");

@@ -3,6 +3,7 @@ import { observer } from "mobx-react-lite";
 import { useNavigate } from "react-router";
 
 import appStore from "src/stores/app-store";
+import chatStore from "src/stores/chat-store";
 import phoneStore from "src/stores/phone-store";
 
 import { BsArrowLeftShort } from "react-icons/bs";
@@ -24,6 +25,7 @@ const ChatHeader = observer(() => {
       <div className="chat-header__info">
         <IconButton
           aria-label="На предыдущую страницу"
+          disabled={chatStore.isLoading}
           icon={<BsArrowLeftShort color="rgba(6, 7, 8, 0.84)" size={24} />}
           onClick={handleButtonClick}
         />
