@@ -1,10 +1,12 @@
+import type { ChatMessageType } from "src/shared";
+
 export interface MessageResponse {
   idMessage: string;
 }
 
 export interface ChatMessage {
   id: number;
-  type: "income" | "outcome";
+  type: ChatMessageType;
   text: string;
   timestamp: number;
 }

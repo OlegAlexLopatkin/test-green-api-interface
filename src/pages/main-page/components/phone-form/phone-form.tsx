@@ -15,11 +15,11 @@ import { useCallback } from "react";
 
 const PhoneForm = observer(() => {
   const navigate = useNavigate();
-  const { isValidPhone, phone, nextButtonClickHandler, setPhone } = phoneStore;
+  const { phone, handleNextButtonClick, setPhone } = phoneStore;
 
   const handleButtonClick = useCallback(() => {
-    nextButtonClickHandler(navigate);
-  }, [navigate, nextButtonClickHandler]);
+    handleNextButtonClick(navigate);
+  }, [handleNextButtonClick, navigate]);
 
   return (
     <form className="phone-form">
@@ -39,11 +39,7 @@ const PhoneForm = observer(() => {
 
         <PhoneNumberInput value={phone} onChange={setPhone} />
 
-        <Button
-          disabled={!isValidPhone}
-          label="Дальше"
-          onClick={handleButtonClick}
-        />
+        <Button label="Дальше" onClick={handleButtonClick} />
       </div>
     </form>
   );

@@ -11,13 +11,18 @@ import { MAX_MESSAGE_LENGTH } from "src/constants";
 import "./chat-form.scss";
 
 const ChatForm = observer(() => {
-  const { isLoading, isMessageValid, message, sendMessage, setMessage } =
-    chatStore;
+  const {
+    isLoading,
+    isMessageValid,
+    messageInputValue,
+    sendMessage,
+    setMessageInputValue,
+  } = chatStore;
 
   const handleChange = useCallback(
     (e: ChangeEvent<HTMLTextAreaElement, HTMLTextAreaElement>) =>
-      setMessage(e.target.value),
-    [setMessage],
+      setMessageInputValue(e.target.value),
+    [setMessageInputValue],
   );
 
   return (
@@ -26,10 +31,11 @@ const ChatForm = observer(() => {
         <textarea
           className="chat-form__textarea"
           id="message"
+          autoFocus
           disabled={isLoading}
           maxLength={MAX_MESSAGE_LENGTH}
           name="message"
-          value={message}
+          value={messageInputValue}
           onChange={handleChange}
         >
           Сообщение
@@ -40,6 +46,7 @@ const ChatForm = observer(() => {
           aria-label="Отправить сообщение"
           disabled={isLoading || !isMessageValid}
           icon={<BsArrowUpShort color="#ffffff" size={24} />}
+          theme="primary"
           type="submit"
           onClick={sendMessage}
         />

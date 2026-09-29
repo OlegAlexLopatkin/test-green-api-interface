@@ -9,10 +9,11 @@ const IconButton: FC<IconButtonProps> = ({
   className,
   disabled,
   icon,
+  theme = "ghost",
   type = "button",
   ...rest
 }) => {
-  const classes = classNames("icon-button", className);
+  const classes = classNames("icon-button", `icon-button_${theme}`, className);
 
   return (
     <button className={classes} disabled={disabled} type={type} {...rest}>
